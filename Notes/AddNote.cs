@@ -64,5 +64,10 @@ namespace Notes
         {
             nameNote.Text = "";
         }
+
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
