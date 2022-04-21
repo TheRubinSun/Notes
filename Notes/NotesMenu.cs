@@ -176,6 +176,7 @@ namespace Notes
                 createNotesButton.Font = new Font("Pacifico", 9, FontStyle.Italic);
                 labelFont.Font = new Font("Pacifico", 9, FontStyle.Italic);
                 labelSizeFont.Font = new Font("Pacifico", 9, FontStyle.Italic);
+                deletAll.Font = new Font("Pacifico", 9, FontStyle.Italic);
 
                 ChangeFont.BackColor = Color.Red;
                 styleActive = true;
@@ -193,6 +194,7 @@ namespace Notes
                 createNotesButton.Font = new Font("Montserrat SemiBold", 8, FontStyle.Bold);
                 labelFont.Font = new Font("Montserrat SemiBold", 8, FontStyle.Bold);
                 labelSizeFont.Font = new Font("Montserrat SemiBold", 8, FontStyle.Bold);
+                deletAll.Font = new Font("Montserrat SemiBold", 8, FontStyle.Bold);
 
                 ChangeFont.BackColor = Color.Black;
                 styleActive = false;

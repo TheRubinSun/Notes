@@ -1,0 +1,13 @@
+C:\Users\danil\source\repos\Notes\Notes\bin\Debug\Notes.exe.config
+C:\Users\danil\source\repos\Notes\Notes\bin\Debug\Notes.exe
+C:\Users\danil\source\repos\Notes\Notes\bin\Debug\Notes.pdb
+C:\Users\danil\source\repos\Notes\Notes\obj\Debug\Notes.csproj.AssemblyReference.cache
+C:\Users\danil\source\repos\Notes\Notes\obj\Debug\Notes.csproj.SuggestedBindingRedirects.cache
+C:\Users\danil\source\repos\Notes\Notes\obj\Debug\Notes.NotesMenu.resources
+C:\Users\danil\source\repos\Notes\Notes\obj\Debug\Notes.Properties.Resources.resources
+C:\Users\danil\source\repos\Notes\Notes\obj\Debug\Notes.csproj.GenerateResource.cache
+C:\Users\danil\source\repos\Notes\Notes\obj\Debug\Notes.csproj.CoreCompileInputs.cache
+C:\Users\danil\source\repos\Notes\Notes\obj\Debug\Notes.exe
+C:\Users\danil\source\repos\Notes\Notes\obj\Debug\Notes.pdb
+C:\Users\danil\source\repos\Notes\Notes\obj\Debug\Notes.AddNote.resources
+C:\Users\danil\source\repos\Notes\Notes\obj\Debug\Notes.InfoApp.resources
