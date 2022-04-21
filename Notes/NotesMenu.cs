@@ -45,6 +45,7 @@ namespace Notes
 
         private void loadNoteButton_Click(object sender, EventArgs e)
         {
+            DataNotes.RemoveAll();
             OpenFile();
             UpdateDisplay();
         }
