@@ -28,38 +28,7 @@ namespace Notes
 
         }
 
-        private void createNotesButton_Click(object sender, EventArgs e)
-        {
-            AddNote addNote = new AddNote();
-            addNote.ShowDialog();//Обновить таблицу записей
-            UpdateDisplay();
-        }
 
-        private void deleteNoteButton_Click(object sender, EventArgs e)
-        {
-            DataNotes.RemoveNote(curIdNote);
-            UpdateDisplay();//Обновить таблицу записей
-            curIdNote = -1; //Обнулить id
-            CheckCurIdForEnable();
-        }
-
-        private void loadNoteButton_Click(object sender, EventArgs e)
-        {
-            DataNotes.RemoveAll();
-            OpenFile();
-            UpdateDisplay();
-        }
-
-        private void saveNoteButton_Click(object sender, EventArgs e)
-        {
-            SaveFile();
-        }
-
-        private void editNameButton_Click(object sender, EventArgs e)
-        {
-            DataNotes.SetName(curIdNote, nameNoteEditBox.Text);
-            UpdateDisplay();
-        }
 
         private void textNote_TextChanged(object sender, EventArgs e)
         {
@@ -224,7 +193,7 @@ namespace Notes
             textNoteMenu.Font = font1;
         }
 
-        string saveName = "\\SaveNotes.txt";
+        string saveName = "\\SaveNotes.read";
         void SaveFile()
         {
             string location1 = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -255,6 +224,47 @@ namespace Notes
             catch
             {
 
+            }
+        }
+        void SaveFileHow()
+        {
+            string location1 = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            //string path1 = Path.GetDirectoryName(location1) + "\\SaveFilesNotes";
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.InitialDirectory = location1;
+                
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    string pathFile = sfd.FileName;
+                    if (!(Directory.Exists(pathFile)))
+                    {
+                        Directory.CreateDirectory(pathFile);
+                    }
+                    string save = "";
+                    for (int i = 0; i < DataNotes.CountNote(); i++)
+                    {
+                        save += DataNotes.GetName(i) + "\n";
+                        save += DataNotes.GetData(i) + "\n";
+                        save += DataNotes.GetFont(i) + "\n";
+                        save += DataNotes.GetSizeFont(i) + "\n";
+                        //save += DataNotes.GetText(i) + "\n";
+                        SaveAllText(DataNotes.GetName(i), pathFile, i); //Сохраняем тексты в отдельный файл
+                    }
+                    //File.WriteAllText(path1, save);
+                    try
+                    {
+                        using (StreamWriter sw = new StreamWriter(pathFile + saveName, false, Encoding.Default))
+                        {
+                            sw.Write(save);
+                            sw.Close();
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
             }
         }
         void SaveAllText(string nameFile,string path,int id)
@@ -305,19 +315,84 @@ namespace Notes
                     data = file.ReadLine();
                     font = file.ReadLine();
                     sizeFont = int.Parse(file.ReadLine());
-                    StreamReader file2 = new StreamReader(path2 + (name + ".txt"), Encoding.Default);
-                    text = file2.ReadToEnd();
+                    if (File.Exists(path2 + (name + ".txt")))
+                    {
+                        StreamReader file2 = new StreamReader(path2 + (name + ".txt"), Encoding.Default);
+                        text = file2.ReadToEnd();
+                        file2.Close();
+                    }
+                    else
+                    {
+                        text = "Пустой текстовый файл";
+                    }
                     DataNotes.CreateNewWholeNote(name, data, font, sizeFont, text);
                     countLines-=4;
-                    file2.Close();
+                    
                 }
                 file.Close();
             }
         }
 
+        void OpenFileWithPath()
+        {
+            string location = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string path1 = Path.GetDirectoryName(location) + "\\SaveFilesNotes";
+            using (OpenFileDialog opd = new OpenFileDialog())
+            {
+                opd.InitialDirectory = path1;
+                opd.Filter = "read for test app (*.read)|*.read";
+                if(opd.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = opd.FileName;
+                    string filePathText = Path.GetDirectoryName(filePath) + "\\TextFolder\\";
+
+                    if (File.Exists(filePath))
+                    {
+                        string name = "";
+                        string data = "";
+                        string font = "";
+                        int sizeFont = 0;
+                        string text = "";
+
+                        int countLines = 0;
+                        string[] readText = File.ReadAllLines(filePath);
+                        foreach (string s in readText)
+                        {
+                            countLines++;
+                        }
+                        StreamReader file = new StreamReader(filePath, Encoding.Default);
+                        while (countLines > 0)
+                        {
+                            name = file.ReadLine();
+                            data = file.ReadLine();
+                            font = file.ReadLine();
+                            sizeFont = int.Parse(file.ReadLine());
+                            
+                            if(File.Exists(filePathText + (name + ".txt")))
+                            {
+                                StreamReader file2 = new StreamReader(filePathText + (name + ".txt"), Encoding.Default);
+                                text = file2.ReadToEnd();
+                                file2.Close();
+                            }
+                            else
+                            {
+                                text = "Заметка пуста";
+                            }
+                            DataNotes.CreateNewWholeNote(name, data, font, sizeFont, text);
+                            countLines -= 4;
+                        }
+                        file.Close();
+                    }
+                }
+            }
+            
+        }
+
         private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFile();
+            DataNotes.RemoveAll();
+            OpenFileWithPath();
+            UpdateDisplay();
         }
 
         private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -336,6 +411,51 @@ namespace Notes
         private void NotesMenu_FormClosed(object sender, FormClosedEventArgs e)
         {
             SaveFile();
+        }
+
+        private void открытьToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            DataNotes.RemoveAll();
+            OpenFile();
+            UpdateDisplay();
+        }
+
+        private void createNotesButton_Click(object sender, EventArgs e)
+        {
+            AddNote addNote = new AddNote();
+            addNote.ShowDialog();//Обновить таблицу записей
+            UpdateDisplay();
+        }
+
+        private void deleteNoteButton_Click(object sender, EventArgs e)
+        {
+            DataNotes.RemoveNote(curIdNote);
+            UpdateDisplay();//Обновить таблицу записей
+            curIdNote = -1; //Обнулить id
+            CheckCurIdForEnable();
+        }
+
+        private void loadNoteButton_Click(object sender, EventArgs e)
+        {
+            DataNotes.RemoveAll();
+            OpenFileWithPath();
+            UpdateDisplay();
+        }
+
+        private void saveNoteButton_Click(object sender, EventArgs e)
+        {
+            SaveFile();
+        }
+
+        private void editNameButton_Click(object sender, EventArgs e)
+        {
+            DataNotes.SetName(curIdNote, nameNoteEditBox.Text);
+            UpdateDisplay();
+        }
+
+        private void сохранитьКакToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileHow();
         }
     }
 }
