@@ -19,6 +19,8 @@ namespace Notes
         {
             InitializeComponent();
             OpenFile();
+            curIdNote = 0;
+            startSelectedNotes();
             UpdateDisplay();
             CheckCurIdForEnable();//Актевировать или деактивировать компоненты от ситуации
         }
@@ -27,8 +29,6 @@ namespace Notes
         {
 
         }
-
-
 
         private void textNote_TextChanged(object sender, EventArgs e)
         {
@@ -72,6 +72,19 @@ namespace Notes
             string selectedName = listNotes.SelectedItems[0].SubItems[1].Text; //Получаем название из выделенного объекта
             
             curIdNote = DataNotes.ReturnIdOfNameAndData(selectedData, selectedName); //Находим id объекта
+            textNoteMenu.Text = DataNotes.GetText(curIdNote);                //Текст заметки в область текста
+
+            nameNoteEditBox.Text = DataNotes.GetName(curIdNote);         //Названия заметки в поле для редактирования
+
+            textNoteMenu.Font = fC.ConvertFromString($"{DataNotes.GetFont(curIdNote)}; {DataNotes.GetSizeFont(curIdNote)}pt") as Font;//Подставляем шрифт объекта заметки
+            sizeFont.Text = DataNotes.GetSizeFont(curIdNote).ToString();//В граф размера вводим размер из объета
+            fontName.Text = DataNotes.GetFont(curIdNote);//В граф шрифт вводим шрифт из объета
+
+            CheckCurIdForEnable();
+        }
+
+        private void startSelectedNotes()//Стартовое нулевое выделение
+        {
             textNoteMenu.Text = DataNotes.GetText(curIdNote);                //Текст заметки в область текста
 
             nameNoteEditBox.Text = DataNotes.GetName(curIdNote);         //Названия заметки в поле для редактирования
